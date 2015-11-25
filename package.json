@@ -1,6 +1,6 @@
 {
   "name": "sp-user-profile-property-names",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Get SharePoint user profile property names as array.",
   "main": "index.js",
   "scripts": {
@@ -18,8 +18,5 @@
   "bugs": {
     "url": "https://github.com/Frederick-S/sp-user-profile-property-names/issues"
   },
-  "homepage": "https://github.com/Frederick-S/sp-user-profile-property-names#readme",
-  "dependencies": {
-    "sp-context-helper": "0.0.4"
-  }
+  "homepage": "https://github.com/Frederick-S/sp-user-profile-property-names#readme"
 }

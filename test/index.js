@@ -1,13 +1,6 @@
-var queryString = require('query-string');
 var userProfilePropertyNames = require('../index');
 
-var hostWebUrl = queryString.parse(location.search).SPHostUrl;
-var options = {
-    webUrl: hostWebUrl,
-    useAppContextSite: true
-};
-
-userProfilePropertyNames(options, function (propertyNames) {
+userProfilePropertyNames(function (propertyNames) {
     var html = '';
 
     for (var i = 0, length = propertyNames.length; i < length; i++) {

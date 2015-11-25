@@ -44,16 +44,9 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var queryString = __webpack_require__(1);
-	var userProfilePropertyNames = __webpack_require__(3);
+	var userProfilePropertyNames = __webpack_require__(1);
 
-	var hostWebUrl = queryString.parse(location.search).SPHostUrl;
-	var options = {
-	    webUrl: hostWebUrl,
-	    useAppContextSite: true
-	};
-
-	userProfilePropertyNames(options, function (propertyNames) {
+	userProfilePropertyNames(function (propertyNames) {
 	    var html = '';
 
 	    for (var i = 0, length = propertyNames.length; i < length; i++) {
@@ -68,97 +61,10 @@
 
 /***/ },
 /* 1 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var strictUriEncode = __webpack_require__(2);
-
-	exports.extract = function (str) {
-		return str.split('?')[1] || '';
-	};
-
-	exports.parse = function (str) {
-		if (typeof str !== 'string') {
-			return {};
-		}
-
-		str = str.trim().replace(/^(\?|#|&)/, '');
-
-		if (!str) {
-			return {};
-		}
-
-		return str.split('&').reduce(function (ret, param) {
-			var parts = param.replace(/\+/g, ' ').split('=');
-			// Firefox (pre 40) decodes `%3D` to `=`
-			// https://github.com/sindresorhus/query-string/pull/37
-			var key = parts.shift();
-			var val = parts.length > 0 ? parts.join('=') : undefined;
-
-			key = decodeURIComponent(key);
-
-			// missing `=` should be `null`:
-			// http://w3.org/TR/2012/WD-url-20120524/#collect-url-parameters
-			val = val === undefined ? null : decodeURIComponent(val);
-
-			if (!ret.hasOwnProperty(key)) {
-				ret[key] = val;
-			} else if (Array.isArray(ret[key])) {
-				ret[key].push(val);
-			} else {
-				ret[key] = [ret[key], val];
-			}
-
-			return ret;
-		}, {});
-	};
-
-	exports.stringify = function (obj) {
-		return obj ? Object.keys(obj).sort().map(function (key) {
-			var val = obj[key];
-
-			if (val === undefined) {
-				return '';
-			}
-
-			if (val === null) {
-				return key;
-			}
-
-			if (Array.isArray(val)) {
-				return val.sort().map(function (val2) {
-					return strictUriEncode(key) + '=' + strictUriEncode(val2);
-				}).join('&');
-			}
-
-			return strictUriEncode(key) + '=' + strictUriEncode(val);
-		}).filter(function (x) {
-			return x.length > 0;
-		}).join('&') : '';
-	};
-
-
-/***/ },
-/* 2 */
 /***/ function(module, exports) {
 
-	'use strict';
-	module.exports = function (str) {
-		return encodeURIComponent(str).replace(/[!'()*]/g, function (c) {
-			return '%' + c.charCodeAt(0).toString(16);
-		});
-	};
-
-
-/***/ },
-/* 3 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var contextHelper = __webpack_require__(4);
-
-	module.exports = function (options, done, error) {
-	    var contextWrapper = contextHelper(options.webUrl, options.useAppContextSite);
-	    var clientContext = contextWrapper.clientContext;
+	module.exports = function (done, error) {
+	    var clientContext = SP.ClientContext.get_current();
 	    var peopleManager = new SP.UserProfiles.PeopleManager(clientContext);
 	    var properties = peopleManager.getMyProperties();
 
@@ -178,42 +84,6 @@
 	        error(args.get_message());
 	    });
 	};
-
-
-/***/ },
-/* 4 */
-/***/ function(module, exports) {
-
-	function contextHelper(webUrl, crossSite) {
-	    var web = null;
-	    var site = null;
-	    var clientContext = null;
-	    var appContextSite = null;
-
-	    if (!webUrl) {
-	        clientContext = SP.ClientContext.get_current();
-	        web = clientContext.get_web();
-	        site = clientContext.get_site();
-	    } else if (crossSite) {
-	        clientContext = SP.ClientContext.get_current();
-	        appContextSite = new SP.AppContextSite(clientContext, webUrl);
-	        web = appContextSite.get_web();
-	        site = appContextSite.get_site();
-	    } else {
-	        clientContext = new SP.ClientContext(webUrl);
-	        web = clientContext.get_web();
-	        site = clientContext.get_site();
-	    }
-
-	    return {
-	        web: web,
-	        site: site,
-	        clientContext: clientContext,
-	        appContextSite: appContextSite
-	    };
-	}
-
-	module.exports = contextHelper;
 
 
 /***/ }

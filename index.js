@@ -1,8 +1,5 @@
-var contextHelper = require('sp-context-helper');
-
-module.exports = function (options, done, error) {
-    var contextWrapper = contextHelper(options.webUrl, options.useAppContextSite);
-    var clientContext = contextWrapper.clientContext;
+module.exports = function (done, error) {
+    var clientContext = SP.ClientContext.get_current();
     var peopleManager = new SP.UserProfiles.PeopleManager(clientContext);
     var properties = peopleManager.getMyProperties();
 
