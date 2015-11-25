@@ -1,2 +1,2 @@
 # sp-user-profile-property-names
-Get SharePoint user profile names as array.
+Get SharePoint user profile property names as array.
