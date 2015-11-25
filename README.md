@@ -10,12 +10,7 @@ npm install sp-user-profile-property-names --save
 ```js
 var userProfilePropertyNames = require('sp-user-profile-property-names');
 
-var options = {
-    webUrl: 'web url',
-    useAppContextSite: true
-};
-
-userProfilePropertyNames(options, function (propertyNames) {
+userProfilePropertyNames(function (propertyNames) {
     // Do something
 }, function (errorMessage) {
     // Error
