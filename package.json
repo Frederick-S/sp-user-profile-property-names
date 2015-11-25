@@ -1,6 +1,6 @@
 {
   "name": "sp-user-profile-property-names",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Get SharePoint user profile property names as array.",
   "main": "index.js",
   "scripts": {
