@@ -1,4 +1,6 @@
 # sp-user-profile-property-names
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/Frederick-S/sp-user-profile-property-names.svg)](https://greenkeeper.io/)
 Get SharePoint user profile property names as array.
 
 ## Installation
